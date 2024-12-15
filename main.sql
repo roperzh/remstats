@@ -105,6 +105,7 @@ with repeating_tasks as (
 select
     zpriority,
     ztitle,
+    zcompleted,
     datetime(zr.zduedate + 978307200, 'unixepoch') as due_date,
     (select 1 from repeating_tasks rt where rt.title = zr.ztitle) as is_repeating
 from
