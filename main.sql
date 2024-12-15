@@ -61,6 +61,7 @@ order by
 
 -- all tasks completed in the last week
 select
+    count(1) times_completed,
     zr.ztitle as title,
     datetime(zr.zcompletiondate + 978307200, 'unixepoch') as completion_date
 from
@@ -69,8 +70,12 @@ inner join zremcdbaselist as zl on zr.zlist = zl.z_pk
 where
     zr.zcompleted = 1
     and zr.zmarkedfordeletion = 0
-    and completion_date between datetime('now', 'weekday 0', '-14 day') and datetime('now')
-    and zl.zname in ('Tasks');
+    and completion_date between datetime('now', 'weekday 0', '-7 day') and datetime('now')
+    and zl.zname in ('Tasks')
+group by
+  zr.ztitle
+order by
+  times_completed desc;
 
 
 -- trending # of completed tasks
