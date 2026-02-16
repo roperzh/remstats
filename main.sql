@@ -53,7 +53,7 @@ where
     and zmarkedfordeletion = 0
     and exists (select 1 from repeating_tasks where ztitle = title)
     -- optional, display a subset of tasks
-    and ztitle in ('Training')
+    -- and ztitle in ('Training')
 group by
     week, ztitle
 order by
@@ -63,7 +63,8 @@ order by
 select
     count(1) times_completed,
     zr.ztitle as title,
-    datetime(zr.zcompletiondate + 978307200, 'unixepoch') as completion_date
+    datetime(zr.zcompletiondate + 978307200, 'unixepoch') as completion_date,
+    zpriority
 from
     zremcdreminder as zr
 inner join zremcdbaselist as zl on zr.zlist = zl.z_pk
@@ -75,7 +76,7 @@ where
 group by
   zr.ztitle
 order by
-  times_completed desc;
+  zpriority desc, times_completed desc;
 
 
 -- trending # of completed tasks
@@ -104,7 +105,7 @@ with repeating_tasks as (
 )
 select
     zpriority,
-    ztitle,
+    printf('%.*c', length(ztitle), '*') as ztitle,
     zcompleted,
     datetime(zr.zduedate + 978307200, 'unixepoch') as due_date,
     (select 1 from repeating_tasks rt where rt.title = zr.ztitle) as is_repeating

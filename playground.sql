@@ -18,12 +18,20 @@ ORDER BY
     due_date DESC;
 
 select
-    z_pk,
-    ztitle1
+    count(1)
 from
     ZREMCDOBJECT
 ORDER BY
     z_pk DESC;
+
+select count(1) from zremcdreminder;
+
+select count(1) from zremcdobject;
+
+
+select zzr.ztitle as title from
+    zremcdobject as zr
+inner join zremcdreminder as zzr on zr.zreminder4 = zzr.z_pk
 
 select
     ztitle as title,
